@@ -18,6 +18,7 @@ function FlagAZ() {
     </svg>
   )
 }
+
 function FlagRU() {
   return (
     <svg viewBox="0 0 30 20" className="w-5 h-3 rounded-sm">
@@ -27,6 +28,7 @@ function FlagRU() {
     </svg>
   )
 }
+
 function FlagEN() {
   return (
     <svg viewBox="0 0 60 30" className="w-5 h-3 rounded-sm">
@@ -48,10 +50,18 @@ export default function Topbar() {
 
   useEffect(() => {
     const update = () => {
-      const n = new Date()
-      setClock([n.getUTCHours(), n.getUTCMinutes(), n.getUTCSeconds()]
-        .map(v => String(v).padStart(2,'0')).join(':') + ' UTC')
+      const now = new Date()
+      // Bakı vaxtına məcburi keçid (Asia/Baku)
+      const bakuTime = now.toLocaleTimeString('az-AZ', {
+        timeZone: 'Asia/Baku',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
+      setClock(bakuTime + ' BAKU')
     }
+    
     update()
     const id = setInterval(update, 1000)
     return () => clearInterval(id)
@@ -69,7 +79,8 @@ export default function Topbar() {
         <span className="text-text-1 font-medium">ARNSAFAROV</span> TERMINAL
       </span>
       <div className="w-px h-3.5 bg-border-2"/>
-      <span className="font-mono text-[10px] text-text-3 min-w-[80px]">{clock}</span>
+      <span className="font-mono text-[10px] text-text-3 min-w-[100px]">{clock}</span>
+      
       <div className="flex items-center gap-1">
         <motion.div
           animate={{ opacity: wsConnected ? 1 : 0.3 }}
@@ -79,6 +90,7 @@ export default function Topbar() {
         />
         <span className="font-mono text-[9px] text-green-400 tracking-widest">{t.live}</span>
       </div>
+
       <div className="ml-auto flex">
         {flags.map(({ code, Flag }) => (
           <button
