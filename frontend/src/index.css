@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    background: #0b0f14;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 3px; height: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1a2235; border-radius: 2px; }
+}
+
+@layer utilities {
+  .skeleton {
+    background: linear-gradient(90deg, #111827 25%, #161d2a 50%, #111827 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 2px;
+  }
+  .price-flash-up { animation: priceUp 1.5s ease forwards; }
+  .price-flash-down { animation: priceDown 1.5s ease forwards; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes priceUp {
+  0% { color: #4ade80; }
+  100% { color: #e2e8f0; }
+}
+@keyframes priceDown {
+  0% { color: #f87171; }
+  100% { color: #e2e8f0; }
+}
