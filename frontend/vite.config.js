@@ -6,8 +6,8 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': 'http://localhost:4000',
-      '/ws': { target: 'ws://localhost:4000', ws: true },
+      '/api': 'https://arn-sd6r.onrender.com',
+      '/ws': { target: 'wss://arn-sd6r.onrender.com/ws', ws: true },
     },
   },
 })
