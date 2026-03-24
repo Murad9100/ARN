@@ -9,14 +9,13 @@ export function useWebSocket() {
   const setWsConnected = useStore(s => s.setWsConnected)
 
   function connect() {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const host = window.location.host
-    const ws = new WebSocket(`${protocol}//${host}/ws`)
+    // Bura birbaşa Render linkini qoyuruq ki, Vercel backend-i tapa bilsin
+    const ws = new WebSocket('wss://arn-sd6r.onrender.com/ws')
     wsRef.current = ws
 
     ws.onopen = () => {
       setWsConnected(true)
-      console.log('[WS] Connected')
+      console.log('[WS] Connected to Render Backend')
     }
 
     ws.onmessage = (e) => {
@@ -27,17 +26,20 @@ export function useWebSocket() {
         } else if (msg.type === 'news') {
           setNews(msg.data)
         }
-      } catch (err) {}
+      } catch (err) {
+        console.error('[WS] Message error:', err)
+      }
     }
 
     ws.onclose = () => {
       setWsConnected(false)
-      console.log('[WS] Disconnected. Reconnecting...')
+      console.log('[WS] Disconnected. Reconnecting in 4s...')
       clearTimeout(reconnectRef.current)
       reconnectRef.current = setTimeout(connect, 4000)
     }
 
-    ws.onerror = () => {
+    ws.onerror = (err) => {
+      console.error('[WS] Socket error:', err)
       ws.close()
     }
   }
