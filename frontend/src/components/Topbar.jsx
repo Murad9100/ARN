@@ -51,15 +51,20 @@ export default function Topbar() {
   useEffect(() => {
     const update = () => {
       const now = new Date()
-      // Bakı vaxtına məcburi keçid (Asia/Baku)
-      const bakuTime = now.toLocaleTimeString('az-AZ', {
-        timeZone: 'Asia/Baku',
+      
+      // İstifadəçinin cihazındakı yerli vaxtı götürür
+      const localTime = now.toLocaleTimeString(undefined, {
         hour12: false,
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
       })
-      setClock(bakuTime + ' BAKU')
+      
+      // Cihazın yerləşdiyi şəhəri tapır (Məs: Baku, Istanbul, New_York)
+      const zone = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[1] || 'LOCAL'
+      
+      // Terminal stili üçün təmizləmə (Alt xəttləri boşluqla əvəz edir)
+      setClock(`${localTime} ${zone.replace('_', ' ').toUpperCase()}`)
     }
     
     update()
@@ -79,7 +84,9 @@ export default function Topbar() {
         <span className="text-text-1 font-medium">ARNSAFAROV</span> TERMINAL
       </span>
       <div className="w-px h-3.5 bg-border-2"/>
-      <span className="font-mono text-[10px] text-text-3 min-w-[100px]">{clock}</span>
+      
+      {/* Dinamik Saat Bölməsi */}
+      <span className="font-mono text-[10px] text-text-3 min-w-[120px]">{clock}</span>
       
       <div className="flex items-center gap-1">
         <motion.div
